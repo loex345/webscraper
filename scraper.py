@@ -3,62 +3,20 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 import pandas as pd
 from urllib.parse import urlencode
-import json
-import httpx
-
-#Go through API 
-BASE_HEADERS = {
-    "accept-language": "en-US,en;q=0.9",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
-    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-    "accept-language": "en-US;en;q=0.9",
-    "accept-encoding": "gzip, deflate, br"
-}
-url ="https://www.zillow.com/search/GetSearchPageState.htm?"
-#Set Query information
-parameters = {
-    "searchQueryState": {
-        "pagination": {},
-        "usersSearchTerm": "New Haven, CT",
-        # map coordinates that indicate New Haven city's area
-        "mapBounds": {
-            "west": -73.03037621240235,
-            "east": -72.82781578759766,
-            "south": 41.23043771298298,
-            "north": 41.36611033618769,
-        },
-    },
-    "wants": {
-        # cat1 stands for agent listings
-        "cat1": ["mapResults"]
-        # and cat2 for non-agent listings
-        # "cat2":["mapResults"]
-    },
-    "requestId": 2,
-}
-def autoscraper():
-    response = httpx.get(url + urlencode(parameters), headers=BASE_HEADERS)
-    data = response.json()
-    results = response.json()["cat1"]["searchResults"]["mapResults"]
-    print(json.dumps(results, indent=2))
-    print(f"found {len(results)} property results")
-
-autoscraper()
-
 
 # follow this guide https://scrapfly.io/blog/how-to-scrape-zillow/
 #Create web place 
 
-# def autoscraper():
-#     driver = webdriver.Chrome()
+def autoscraper():
+    driver = webdriver.Chrome()
 
-#     driver.get("https://scrapfly.io/blog/how-to-scrape-zillow/")
+    driver.get('https://www.zillow.com/homes/for_sale/?searchQueryState=%7B%22pagination%22%3A%7B%7D%2C%22mapBounds%22%3A%7B%22west%22%3A-85.20889236975107%2C%22east%22%3A-84.77493240881357%2C%22south%22%3A34.917369310071535%2C%22north%22%3A35.25617591697837%7D%2C%22isMapVisible%22%3Atrue%2C%22filterState%22%3A%7B%22price%22%3A%7B%22min%22%3A0%2C%22max%22%3A600000%7D%2C%22mp%22%3A%7B%22min%22%3A0%2C%22max%22%3A3002%7D%2C%22beds%22%3A%7B%22min%22%3A3%7D%2C%22sort%22%3A%7B%22value%22%3A%22globalrelevanceex%22%7D%2C%22ah%22%3A%7B%22value%22%3Atrue%7D%7D%2C%22isListVisible%22%3Atrue%2C%22mapZoom%22%3A11%7D')
 
-#     content = driver.page_source
-#     title = driver.title
+    content = driver.page_source
+    title = driver.title
 
-#     divs = driver.find_element(By.TAG_NAME,"script")
+    divs = driver.find_elements(By.TAG_NAME,"div")
 
-#     for d in divs:
-#         print(d.text)
-# autoscraper()
+    for d in divs:
+        print(d.text) 
+autoscraper()
