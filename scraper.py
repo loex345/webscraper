@@ -26,16 +26,19 @@ def autoscraper():
     x = type(data)
     print(x)
 
-    #for d in data:
-        #print(d.text) 
+    web_informaton = list()
+
+    for d in data:
+        web_informaton.append(d.text) 
     driver.quit()
+
     #Add Data (list) to dataframe
     #Unpack data from from selenium through loop 
     #Send that data to the data frame
     # Reorganize code
-    exportdata = pd.DataFrame(data,columns=["Tag"])
+    exportdata = pd.DataFrame(web_informaton,columns=["Tag"])
     #Print Data frame
     print(exportdata)
-    exportdata.to_excel("/Users/mymac/downloads/results.xlsx", sheet_name="sheetone")
+    exportdata.to_excel("/Users/mymac/downloads/results.xlsx", sheet_name="test_results")
 
 autoscraper()
